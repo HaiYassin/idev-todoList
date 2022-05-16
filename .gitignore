@@ -50,3 +50,12 @@
 
 # Embedded web-server pid file
 /.web-server-pid
+
+# Ignore db.env
+db.env
+
+# Ignore Nginx Log
+infra/nginx/log/
+
+# Ignore Mysql Files
+infra/mysql/

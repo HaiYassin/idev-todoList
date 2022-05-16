@@ -1,0 +1,52 @@
+version: '3.4'
+
+services:
+  # MARIADB
+  mariadb:
+    image: mariadb:latest
+    restart: 'always'
+    env_file:
+      - db.env
+    volumes:
+      - './infra/mysql/log:/var/log/mysql'
+    networks:
+      - smn_app
+
+  # Symfony App with PHP 8.1
+  php:
+    build:
+      context: ./
+    ports:
+      - '9000:9000'
+    restart: always
+    volumes:
+      - ./:/var/www/
+    depends_on:
+      - mariadb   
+    networks:
+      - smn_app
+
+  # SERVER NGINX 
+  nginx:
+    image: nginx:latest
+    ports:
+      - "8080:80"
+    volumes:
+      - ./:/var/www/
+      - ./infra/nginx/default.conf:/etc/nginx/conf.d/default.conf
+      - ./infra/nginx/log/:/var/log/nginx
+    depends_on:
+      - mariadb
+      - php
+    links:
+      - php
+    networks:
+      - smn_app
+
+  #adminer
+
+networks:
+  smn_app:
+
+volumes:
+    db-data:
