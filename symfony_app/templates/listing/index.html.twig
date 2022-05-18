@@ -1,0 +1,35 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Listing index{% endblock %}
+
+{% block body %}
+    <h1>Toutes les listes</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Nom</th>
+                <th>Nombre de tâches associées</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for listing in listings %}
+            <tr>
+                <td >{{ listing.name }}</td>
+                <td style="color: blue;">{{ listing.tasks|length }}</td>
+                <td>
+                    <a href="{{ path('app_listing_show', {'id': listing.id}) }}"><button>détail</button></a>
+                    {{ include('listing/_delete_form.html.twig') }}
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="3">Aucune liste trouvée</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_listing_new') }}"><button style="color: green;background-color: lightgreen;">Créer une nouvelle liste</button></a>
+{% endblock %}

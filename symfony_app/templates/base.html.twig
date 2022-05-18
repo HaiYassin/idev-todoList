@@ -13,6 +13,10 @@
             {{ encore_entry_script_tags('app') }}
         {% endblock %}
     </head>
+    <nav>
+        <a href="{{ path('app_listing_index') }}"><button>Toutes les listes</button></a>
+        <a href="{{ path('app_task_index') }}"><button>Toutes les tâches</button></a>
+    </nav>
     <body>
         {% block body %}{% endblock %}
     </body>

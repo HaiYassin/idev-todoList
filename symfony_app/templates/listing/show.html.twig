@@ -1,0 +1,40 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Détail de la liste{% endblock %}
+
+{% block body %}
+    <h1>Détail de la liste</h1>
+
+    <a href="{{ path('app_task_new') }}"><button>Créer une nouvelle tâche</button></a>
+    <a href="{{ path('app_delete_all_done_tasks', {'id': listing.id}) }}"><button>Supprimer les tâches réalisées</button></a>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Nom de la liste : {{ listing.name }}</th>
+            </tr>
+            <tr>
+                <th>Les tâches associées :</th>
+                {% for task in listing.tasks %}
+                    {% set backgroundColor = task.state ? 'green' : 'orange' %}
+                    <tr style="background-color: {{backgroundColor}}">
+                        <td>{{ task.title }}</td>
+                        <td>{{ task.state ? 'Fait' : 'A Faire'}}</td>
+                        <td>
+                            <a href="{{ path('app_task_show', {'id': task.id})  }}"><button>Détail de la tâche</button></a>
+                            <a href="{{ path('app_task_edit', {'id': task.id, 'only': 'state'}) }}"><button>Editer la tâche</button></a>
+                        </td>
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td colspan="3">Aucune tâche trouvée</td>
+                    </tr>
+                {% endfor %}
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_listing_edit', {'id': listing.id}) }}"><button style="background-color:orange">Editer la liste</button></a>
+
+    {{ include('listing/_delete_form.html.twig') }}
+{% endblock %}
